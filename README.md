@@ -4,7 +4,7 @@
 
 > Este dashboard pertence a uma serie de dashboards que auxilia no monitoramento do ambiente Protheus.
 
-O dashboard Observabilidade - Protheus Enfironment (Hosts), fornece uma visão geral das maquinas, é uma visão genérica que monitora os principais recursos. 
+O dashboard Observabilidade - Protheus Enfironment (Hosts), fornece uma visão geral das maquinas, é uma visão genérica que monitora os principais recursos.
 
 ## Info
 
@@ -64,7 +64,7 @@ Nesta divisão é possível visualizar a visão geral do estado atual dos proces
 
 - Numero de handles pro cada processo (Processes Handle Count);
 
-- Quantidade do consumo de memória pro cada processo (Processes Working Set). 
+- Quantidade do consumo de memória pro cada processo (Processes Working Set).
 
 ## Disk
 
