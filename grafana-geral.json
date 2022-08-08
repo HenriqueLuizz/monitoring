@@ -41,7 +41,7 @@
       "version": "1.2.0"
     }
   ],
-    "annotations": {
+  "annotations": {
       "list": [
         {
           "builtIn": 1,
@@ -63,17 +63,30 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 19,
-    "iteration": 1654367546507,
+    "id": 24,
+    "iteration": 1659967028863,
     "links": [],
     "liveNow": false,
     "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 25,
+        "panels": [],
+        "title": "Geral",
+        "type": "row"
+      },
       {
         "gridPos": {
           "h": 6,
           "w": 7,
           "x": 0,
-          "y": 0
+          "y": 1
         },
         "id": 14,
         "options": {
@@ -151,7 +164,7 @@
           "h": 6,
           "w": 17,
           "x": 7,
-          "y": 0
+          "y": 1
         },
         "id": 16,
         "options": {
@@ -163,9 +176,6 @@
         "type": "text"
       },
       {
-        "datasource": {
-          "uid": "InfluxDB2"
-        },
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -201,10 +211,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 9,
-          "w": 13,
+          "h": 11,
+          "w": 12,
           "x": 0,
-          "y": 6
+          "y": 7
         },
         "id": 3,
         "options": {
@@ -226,7 +236,7 @@
               "type": "influxdb",
               "uid": "OGeW1lA7k"
             },
-            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\" or r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\" or r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> yield(name: \"mean\")",
             "refId": "A"
           }
         ],
@@ -235,9 +245,6 @@
         "type": "bargauge"
       },
       {
-        "datasource": {
-          "uid": "InfluxDB2"
-        },
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -273,10 +280,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 9,
+          "h": 11,
           "w": 11,
           "x": 13,
-          "y": 6
+          "y": 7
         },
         "id": 4,
         "options": {
@@ -307,42 +314,510 @@
         "type": "bargauge"
       },
       {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 2,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 12,
+          "w": 13,
+          "x": 0,
+          "y": 18
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_services\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Percent_Processor_Time\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> filter(fn: (r) => r[\"instance\"] != \"Idle\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "% Processor Time by Services",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transformations": [],
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:72",
+            "decimals": 2,
+            "format": "percent",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:73",
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 2,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 12,
+          "w": 11,
+          "x": 13,
+          "y": 18
+        },
+        "hiddenSeries": false,
+        "id": 5,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_proc\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Working_Set\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Memory by Services",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transformations": [],
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:162",
+            "format": "decbytes",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:163",
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 27,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "continuous-GrYlRd"
+                },
+                "decimals": 0,
+                "mappings": [],
+                "max": 2500,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1000
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 2500
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 31
+            },
+            "id": 22,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "text": {
+                "valueSize": 20
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "influxdb",
+                  "uid": "OGeW1lA7k"
+                },
+                "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_diskio\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Reads_persec\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n\n",
+                "refId": "A"
+              }
+            ],
+            "title": "DB - IOPS  - Read (Avg)",
+            "transparent": true,
+            "type": "bargauge"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "continuous-GrYlRd"
+                },
+                "decimals": 0,
+                "mappings": [],
+                "max": 2500,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1000
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 2500
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 31
+            },
+            "id": 43,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "max"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "text": {
+                "valueSize": 20
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "influxdb",
+                  "uid": "OGeW1lA7k"
+                },
+                "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_diskio\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Reads_persec\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n\n",
+                "refId": "A"
+              }
+            ],
+            "title": "DB - IOPS  - Read (Max)",
+            "transparent": true,
+            "type": "bargauge"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "continuous-GrYlRd"
+                },
+                "decimals": 1,
+                "mappings": [],
+                "max": 2500,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1000
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 2500
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 39
+            },
+            "id": 44,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "text": {
+                "valueSize": 20
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "influxdb",
+                  "uid": "OGeW1lA7k"
+                },
+                "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_diskio\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Writes_persec\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n\n",
+                "refId": "A"
+              }
+            ],
+            "title": "DB - IOPS  - Writes (Avg)",
+            "transparent": true,
+            "type": "bargauge"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "continuous-GrYlRd"
+                },
+                "decimals": 1,
+                "mappings": [],
+                "max": 2500,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1000
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 2500
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 39
+            },
+            "id": 23,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "max"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true,
+              "text": {
+                "valueSize": 20
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "influxdb",
+                  "uid": "OGeW1lA7k"
+                },
+                "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_diskio\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Disk_Writes_persec\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n\n",
+                "refId": "A"
+              }
+            ],
+            "title": "DB - IOPS  - Writes (Max)",
+            "transparent": true,
+            "type": "bargauge"
+          }
+        ],
+        "title": "Disk",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 31
+        },
+        "id": 31,
+        "panels": [],
+        "title": "CPU",
+        "type": "row"
+      },
+      {
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "palette-classic"
+              "mode": "thresholds"
             },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 10,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineStyle": {
-                "fill": "solid"
-              },
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "never",
-              "spanNulls": true,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
+            "decimals": 1,
             "mappings": [],
             "max": 100,
             "min": 0,
@@ -354,8 +829,16 @@
                   "value": null
                 },
                 {
+                  "color": "super-light-yellow",
+                  "value": 60
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
                   "color": "red",
-                  "value": 80
+                  "value": 95
                 }
               ]
             },
@@ -364,21 +847,23 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 12,
-          "w": 13,
+          "h": 11,
+          "w": 12,
           "x": 0,
-          "y": 15
+          "y": 32
         },
-        "id": 2,
+        "id": 40,
         "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "table",
-            "placement": "right"
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
           },
-          "tooltip": {
-            "mode": "single"
-          }
+          "showUnfilled": true
         },
         "pluginVersion": "8.3.3",
         "targets": [
@@ -387,53 +872,24 @@
               "type": "influxdb",
               "uid": "OGeW1lA7k"
             },
-            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_services\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Percent_Processor_Time\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> filter(fn: (r) => r[\"instance\"] != \"Idle\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\" or r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> yield(name: \"mean\")",
             "refId": "A"
           }
         ],
-        "title": "% Processor Time by Services",
-        "transformations": [],
+        "title": "CPU Usage % (System + User )",
         "transparent": true,
-        "type": "timeseries"
+        "type": "bargauge"
       },
       {
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "palette-classic"
+              "mode": "thresholds"
             },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 10,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineStyle": {
-                "fill": "solid"
-              },
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "never",
-              "spanNulls": true,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
+            "decimals": 1,
             "mappings": [],
+            "max": 100,
+            "min": 0,
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -442,31 +898,41 @@
                   "value": null
                 },
                 {
+                  "color": "super-light-yellow",
+                  "value": 60
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
                   "color": "red",
-                  "value": 80
+                  "value": 95
                 }
               ]
             },
-            "unit": "decbytes"
+            "unit": "percent"
           },
           "overrides": []
         },
         "gridPos": {
-          "h": 12,
-          "w": 11,
-          "x": 13,
-          "y": 15
+          "h": 11,
+          "w": 12,
+          "x": 12,
+          "y": 32
         },
-        "id": 5,
+        "id": 38,
         "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "table",
-            "placement": "right"
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "max"
+            ],
+            "fields": "",
+            "values": false
           },
-          "tooltip": {
-            "mode": "single"
-          }
+          "showUnfilled": true
         },
         "pluginVersion": "8.3.3",
         "targets": [
@@ -475,16 +941,493 @@
               "type": "influxdb",
               "uid": "OGeW1lA7k"
             },
-            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_proc\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Working_Set\")\n  |> filter(fn: (r) => r[\"host\"] == \"${instances}\")\n  |> group(columns: [\"instance\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\" or r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> yield(name: \"mean\")",
             "refId": "A"
           }
         ],
-        "title": "Memory by Services",
-        "transformations": [],
+        "title": "CPU Usage % (Max)",
         "transparent": true,
-        "type": "timeseries"
+        "type": "bargauge"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 2,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 43
+        },
+        "hiddenSeries": false,
+        "id": 41,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\" or r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "CPU Usage % (System + User )",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:382",
+            "format": "percent",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:383",
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 55
+        },
+        "id": 33,
+        "panels": [],
+        "title": "Memory",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 60
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 13,
+          "x": 0,
+          "y": 56
+        },
+        "id": 29,
+        "options": {
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"used_percent\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Memory Usage % (Avg)",
+        "transparent": true,
+        "type": "bargauge"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 60
+                },
+                {
+                  "color": "orange",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 11,
+          "x": 13,
+          "y": 56
+        },
+        "id": 39,
+        "options": {
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "max"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"used_percent\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"Max\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Memory Usage % (Max)",
+        "transparent": true,
+        "type": "bargauge"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 67
+        },
+        "hiddenSeries": false,
+        "id": 42,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"used_percent\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n\n",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Memory Usage % (Avg)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:445",
+            "format": "none",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:446",
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 78
+        },
+        "id": 35,
+        "panels": [],
+        "title": "Network",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": 80000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 40000000
+                },
+                {
+                  "color": "orange",
+                  "value": 60000000
+                },
+                {
+                  "color": "red",
+                  "value": 80000000
+                }
+              ]
+            },
+            "unit": "binBps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 12,
+          "x": 0,
+          "y": 79
+        },
+        "id": 19,
+        "options": {
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Bytes_Received_persec\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Bytes Received/persec",
+        "transparent": true,
+        "type": "bargauge"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": 80000000,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 40000000
+                },
+                {
+                  "color": "orange",
+                  "value": 60000000
+                },
+                {
+                  "color": "red",
+                  "value": 80000000
+                }
+              ]
+            },
+            "unit": "binBps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 12,
+          "x": 12,
+          "y": 79
+        },
+        "id": 20,
+        "options": {
+          "displayMode": "gradient",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "OGeW1lA7k"
+            },
+            "query": "from(bucket: \"${bucket}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"win_net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Bytes_Sent_persec\")\n  |> group(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Bytes Sent/persec",
+        "transparent": true,
+        "type": "bargauge"
       }
     ],
+    "refresh": false,
     "schemaVersion": 34,
     "style": "dark",
     "tags": [],
@@ -492,9 +1435,7 @@
       "list": [
         {
           "current": {
-            "selected": false,
-            "text": "engprodados",
-            "value": "engprodados"
+            "selected": false
           },
           "datasource": {
             "uid": "InfluxDB2"
@@ -518,9 +1459,7 @@
         },
         {
           "current": {
-            "selected": true,
-            "text": "VMDBA67123",
-            "value": "VMDBA67123"
+            "selected": false
           },
           "datasource": {
             "uid": "InfluxDB2"
@@ -548,10 +1487,12 @@
       "from": "now-1h",
       "to": "now"
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Observabilidade - Protheus Environment (Visão Geral)",
-    "uid": "VwXkPyrnk",
-    "version": 1,
-    "weekStart": ""
-  }
+  "timepicker": {},
+  "timezone": "",
+  "title": "Observabilidade - Protheus Environment (Visão Geral)",
+  "uid": "VwXkPyrnk",
+  "version": 1,
+  "weekStart": "",
+  "gnetId": 16385,
+  "description": "Observabilidade Protheus Environment (Windows)"
+}
