@@ -85,3 +85,45 @@ Nesta divisão é possível visualizar a visão geral do estado atual da interfa
 - Velociade de recebimento e envio por bytes (Bytes Recived/Sec e Bytes Sent/Sec);
 
 - Quantidade de pacotes perdidos e com erros ( Packets Drop e Packets Error).
+
+## Configurando o telegraf.conf
+
+Localize a chave Instances e realize a inclusão de appserver e DBAccess até quantidade existente no servidor, por exemplo se for 3 serviços appserver e 2 serviços DBAccess, no servidor incluir:
+`Instances = ["appserver","appserver#1","appserver#3","dbaccess64","dbaccess64#1","*"]`
+
+```ini
+[[inputs.win_perf_counters.object]]
+    ObjectName = "Process"
+    Counters = [
+        "% Processor Time",
+        "Handle Count",
+        "Private Bytes",
+        "Thread Count",
+        "Virtual Bytes",
+        "Working Set"
+        ]
+    Instances = ["appserver","appserver#1","dbaccess64","dbaccess64#1","*"]
+    Measurement = "win_proc"
+```
+
+Localize a chave inputs.net_response e insira um grupo de configurações conforme exemplos a seguir para cada porta a ser monitorada:
+
+Exemplo de portas License Server:
+
+Porta TCP do **License Server Virtual**
+
+```ini
+[[inputs.net_response]]
+  protocol = "tcp"
+  address = "127.0.0.1:5555"
+  timeout = "10s”
+```
+
+Porta TCP do **Appserver**
+
+```ini
+[[inputs.net_response]]
+  protocol = "tcp"
+  address = "127.0.0.1:1234"
+  timeout = "10s”
+```
