@@ -473,7 +473,7 @@
       },
       "id": 47,
       "options": {
-        "content": "<center>\n<img src=\"https://pngimage.net/wp-content/uploads/2018/06/server-logo-png-3.png\" width=\"50\" >\n<br>\n<p><font size=\"5\"> ${instances} </font></p>\n</center>\n",
+        "content": "<center>\n<img src=\"https://pngimg.com/uploads/server/server_PNG11.png\" width=\"50\" >\n<br>\n<p><font size=\"5\"> ${instances} </font></p>\n</center>\n",
         "mode": "html"
       },
       "pluginVersion": "8.3.3",
@@ -3706,9 +3706,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": {
-            "uid": "${DS_INFLUXDB_TELEGRAF}"
-          },
+          "datasource": {"uid": "${DS_INFLUXDB_TELEGRAF}"},
           "description": "",
           "fieldConfig": {
             "defaults": {
@@ -4036,9 +4034,7 @@
   "templating": {
     "list": [
       {
-        "datasource": {
-          "uid": "${DS_INFLUXDB_TELEGRAF}"
-        },
+        "datasource": { "uid": "${DS_INFLUXDB_TELEGRAF}" },
         "definition": "buckets()",
         "hide": 0,
         "includeAll": false,
@@ -4048,7 +4044,7 @@
         "options": [],
         "query": "buckets()",
         "refresh": 1,
-        "regex": "",
+        "regex": "/^(?!\\_).*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -4057,9 +4053,7 @@
         "useTags": false
       },
       {
-        "datasource": {
-          "uid": "${DS_INFLUXDB_TELEGRAF}"
-        },
+        "datasource": {"uid": "${DS_INFLUXDB_TELEGRAF}"},
         "definition": "import \"influxdata/influxdb/v1\"\nv1.tagValues(\n    bucket: \"${bucket}\",\n    tag: \"host\",\n    predicate: (r) => true,\n    start: -1d\n)",
         "hide": 0,
         "includeAll": false,
@@ -4085,9 +4079,9 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Observabilidade - Protheus Environment (Hosts)",
+  "title": "Observability - Protheus Environment (Windows Detail)",
   "uid": "-5hFt407z",
   "version": 2,
   "weekStart": "",
-  "description": "Observabilidade Protheus Environment para Windows"
+  "description": "Detail View Protheus Environment (Windows)"
 }
